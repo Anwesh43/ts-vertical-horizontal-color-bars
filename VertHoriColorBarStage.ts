@@ -103,16 +103,18 @@ class VHCBar {
         const barSize : number = size / colors.length
         context.fillStyle = colors[this.i]
         const x : number = this.i * barSize + barSize / 2, y : number = this.i * barSize + barSize / 2
-        const length : number = (w - (this.i + 1) * barSize)
+        const length : number = (size - (this.i + 1) * barSize)
         context.save()
         context.translate(x, y)
         const barSizeUpdated = barSize * this.state.scale
         context.fillRect(-barSizeUpdated/2, -barSizeUpdated/2, barSizeUpdated, barSizeUpdated)
-        for (var i = 0; i < 2; i++) {
-            context.save()
-            context.rotate(Math.PI/2 * i)
-            context.fillRect(barSize/2, -barSize/2, length * this.state.scale, barSize)
-            context.restore()
+        if (this.i != colors.length - 1) {
+            for (var i = 0; i < 2; i++) {
+                context.save()
+                context.rotate(Math.PI/2 * i)
+                context.fillRect(barSize / 2 - barSize / 15, -barSize/2, (length + barSize / 15) * this.state.scale, barSize)
+                context.restore()
+            }
         }
         context.restore()
     }
@@ -144,9 +146,12 @@ class VHCBarContainer {
     }
 
     draw(context : CanvasRenderingContext2D) {
+        context.save()
+        context.translate(w / 2 - size/2, h / 2 - size/2)
         this.vhcBars.forEach((vhcBar : VHCBar) => {
             vhcBar.draw(context)
         })
+        context.restore()
     }
 
     update(stopcb : Function) {
@@ -175,7 +180,7 @@ class ContainerState {
         this.j += this.dir
         if (this.j == colors.length || this.j == -1) {
             this.dir *= -1
-            this.j -= this.dir
+            this.j += this.dir
         }
     }
 
