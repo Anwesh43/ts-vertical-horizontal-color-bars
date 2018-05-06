@@ -143,3 +143,25 @@ class VHCBarContainer {
 
     }
 }
+
+class ContainerState {
+
+    j : number = 0
+
+    dir : number = 1
+
+    incrementCounter() {
+        this.j += this.dir
+        if (this.j == colors.length || this.j == -1) {
+            this.dir *= -1
+            this.j -= this.dir
+        }
+    }
+
+    execute(cb : Function) {
+        if (this.j < colors.length) {
+            cb(this.j)
+        }
+    }
+
+}
