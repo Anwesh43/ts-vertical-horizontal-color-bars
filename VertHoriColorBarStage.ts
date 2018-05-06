@@ -61,7 +61,7 @@ class VHCAnimator {
     animated : boolean = false
 
     interval : number
-    
+
     start(updatecb : Function) {
         if (!this.animated) {
             this.animated = true
@@ -77,4 +77,40 @@ class VHCAnimator {
             clearInterval(this.interval)
         }
     }
+}
+
+class VHCBar {
+
+    state : VHCState = new VHCState()
+
+    constructor(private i : number) {
+
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        const barSize : number = size / colors.length
+        context.fillStyle = colors[this.i]
+        const x : number = this.i * barSize + barSize / 2, y : number = this.i * barSize + barSize / 2
+        const length : number = (w - (this.i + 1) * barSize)
+        context.save()
+        context.translate(x, y)
+        const barSizeUpdated = barSize * this.state.scale
+        context.fillRect(-barSizeUpdated/2, -barSizeUpdated/2, barSizeUpdated, barSizeUpdated)
+        for (var i = 0; i < 2; i++) {
+            context.save()
+            context.rotate(Math.PI/2 * i)
+            context.fillRect(barSize/2, -barSize/2, length * this.state.scale, barSize)
+            context.restore()
+        }
+        context.restore()
+    }
+
+    update(stopcb : Function) {
+        this.state.update(stopcb)
+    }
+
+    startUpdating(startcb : Function) {
+        this.state.startUpdating(startcb)
+    }
+
 }
