@@ -114,3 +114,32 @@ class VHCBar {
     }
 
 }
+
+class VHCBarContainer {
+
+    vhcBars : Array<VHCBar> = []
+
+    constructor () {
+        this.initVHCBars()
+    }
+
+    initVHCBars() {
+        for (var i = 0; i < colors.length; i++) {
+            this.vhcBars.push(new VHCBar(i))
+        }
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        this.vhcBars.forEach((vhcBar : VHCBar) => {
+            vhcBar.draw(context)
+        })
+    }
+
+    update(stopcb : Function) {
+
+    }
+
+    startUpdating(startcb : Function) {
+
+    }
+}
