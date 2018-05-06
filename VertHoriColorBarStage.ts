@@ -186,3 +186,9 @@ class ContainerState {
     }
 
 }
+
+const initVertHoriColorBarStage : Function = () => {
+    const stage : VertHoriColorBarStage = new VertHoriColorBarStage()
+    stage.render()
+    stage.handleTap()
+}
