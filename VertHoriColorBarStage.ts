@@ -7,6 +7,10 @@ class VertHoriColorBarStage {
 
     context : CanvasRenderingContext2D
 
+    container : VHCBarContainer = new VHCBarContainer()
+
+    animator : VHCAnimator = new VHCAnimator()
+
     constructor() {
         this.initCanvas()
     }
@@ -21,11 +25,19 @@ class VertHoriColorBarStage {
     render() {
         this.context.fillStyle = '#212121'
         this.context.fillRect(0, 0, w, h)
+        this.container.draw(this.context)
     }
 
     handleTap() {
         this.canvas.onmousedown = (event) => {
-
+            this.container.startUpdating(() => {
+                this.animator.start(() => {
+                    this.render()
+                    this.container.update(() => {
+                        this.animator.stop()
+                    })
+                })
+            })
         }
     }
 }
