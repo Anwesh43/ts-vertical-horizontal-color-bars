@@ -44,19 +44,25 @@ class VertHoriColorBarStage {
 
 class VHCState {
 
-    scale : number = 0
+    scales : Array<number> = [0, 0]
 
     dir : number = 0
 
     prevScale : number = 0
 
+    j : number = 0
+
     update(stopcb : Function) {
-        this.scale += 0.1 * this.dir
-        if (Math.abs(this.scale - this.prevScale) > 1) {
-            this.scale = this.prevScale + this.dir
-            this.dir = 0
-            this.prevScale = this.scale
-            stopcb()
+        this.scales[this.j] += 0.1 * this.dir
+        if (Math.abs(this.scales[this.j] - this.prevScale) > 1) {
+            this.scales[this.j] = this.prevScale + this.dir
+            this.j += this.dir
+            if (this.j == this.scales.length || this.j == -1) {
+                this.j -= this.dir
+                this.dir = 0
+                this.prevScale = this.scales[this.j]
+                stopcb()
+            }
         }
     }
 
@@ -106,13 +112,13 @@ class VHCBar {
         const length : number = (size - (this.i + 1) * barSize)
         context.save()
         context.translate(x, y)
-        const barSizeUpdated = barSize * this.state.scale
-        context.fillRect(-barSizeUpdated/2, -barSizeUpdated/2, barSizeUpdated, barSizeUpdated)
+        const barSizeUpdated = barSize * this.state.scales[0]
+        context.fillRect(-barSize / 2, -barSize/2, barSizeUpdated, barSizeUpdated)
         if (this.i != colors.length - 1) {
             for (var i = 0; i < 2; i++) {
                 context.save()
                 context.rotate(Math.PI/2 * i)
-                context.fillRect(barSize / 2 - barSize / 15, -barSize/2, (length + barSize / 15) * this.state.scale, barSize)
+                context.fillRect(barSize / 2 - barSize / 15, -barSize/2, (length + barSize / 15) * this.state.scales[1], barSize)
                 context.restore()
             }
         }
