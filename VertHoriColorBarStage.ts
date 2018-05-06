@@ -1,5 +1,6 @@
 const w : number = window.innerWidth, h : number = window.innerHeight
 const size : number = 2 * Math.min(w, h) / 3
+const colors : Array<string> = ["#673AB7", "#FF5722", "#1565C0", "#4CAF50", "#f44336"]
 class VertHoriColorBarStage {
 
     canvas : HTMLCanvasElement = document.createElement('canvas')
