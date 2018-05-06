@@ -119,6 +119,8 @@ class VHCBarContainer {
 
     vhcBars : Array<VHCBar> = []
 
+    state : ContainerState = new ContainerState()
+
     constructor () {
         this.initVHCBars()
     }
@@ -136,11 +138,18 @@ class VHCBarContainer {
     }
 
     update(stopcb : Function) {
-
+        this.state.execute((j : number) => {
+            this.vhcBars[j].update(() => {
+                this.state.incrementCounter()
+                stopcb()
+            })
+        })
     }
 
     startUpdating(startcb : Function) {
-
+        this.state.execute((j : number) => {
+            this.vhcBars[j].startUpdating(startcb)
+        })
     }
 }
 
